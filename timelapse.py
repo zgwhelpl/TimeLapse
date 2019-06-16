@@ -3,8 +3,6 @@ from glob import glob
 from subprocess import check_output, CalledProcessError
 import datetime
 import numpy as np
-#import cv2
-#import picamera
 import os
 import sys
 
@@ -43,14 +41,14 @@ def createFolder(directory):
 #check for flash drive (prefered) 
 #ensure the 'lapses' folder exists
 #                           #xxxxxxxxxxxxxxxxxxxxxxxxxxxxx     Delete when we
-if (get_usb_devices() == {} || flashDriveName is None):# x <-- figure out the 
+if ((get_usb_devices() == {} ) or (flashDriveName is None)):# x <-- figure out the 
 #   #no flash drive         #xxxxxxxxxxxxxxxxxxxxxxxxxxxxx     nameless USB issue
 	print('No flash drive detected')
 	newDirName = './lapses'
 else:
 	#there is flash drive 
 	print('flash drive detected')
-	if (flashDriveName not None):
+	if (not (flashDriveName == None)):
 		newDirName = "/Volumes/" + flashDriveName + "/lapses/"
 	else:
 		print('HOWEVER, I don\'t know how to use that memory address')
