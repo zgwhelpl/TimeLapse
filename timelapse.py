@@ -43,7 +43,7 @@ def createFolder(directory):
 #check for flash drive (prefered) 
 #ensure the 'lapses' folder exists
 #                           #xxxxxxxxxxxxxxxxxxxxxxxxxxxxx     Delete when we
-if (get_usb_devices() == {} || flashDriveName is None):# x <-- figure out the 
+if (get_usb_devices() == {} or flashDriveName is None):# x <-- figure out the 
 #   #no flash drive         #xxxxxxxxxxxxxxxxxxxxxxxxxxxxx     nameless USB issue
 	print('No flash drive detected')
 	newDirName = './lapses'
