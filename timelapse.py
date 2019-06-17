@@ -3,17 +3,16 @@ from glob import glob
 from subprocess import check_output, CalledProcessError
 import datetime
 import numpy as np
-#import cv2
-#import picamera
 import os
 import sys
 
 platform = sys.platform
-#print(platform)
+print(platform)
 
 flashDriveName = 'SUPERMAN'
 
 waitTime = 10
+imgCount = 0
 
 #give us some space to separate now from earlier
 print("\n\n\n\n\n")
@@ -43,15 +42,18 @@ def createFolder(directory):
 #check for flash drive (prefered) 
 #ensure the 'lapses' folder exists
 #                           #xxxxxxxxxxxxxxxxxxxxxxxxxxxxx     Delete when we
-if (get_usb_devices() == {} or flashDriveName is None):# x <-- figure out the 
+if ((get_usb_devices() == {} ) or (flashDriveName is None)):# x <-- figure out the 
 #   #no flash drive         #xxxxxxxxxxxxxxxxxxxxxxxxxxxxx     nameless USB issue
 	print('No flash drive detected')
 	newDirName = './lapses'
 else:
 	#there is flash drive 
 	print('flash drive detected')
-	if (flashDriveName not None):
-		newDirName = "/Volumes/" + flashDriveName + "/lapses/"
+	if (flashDriveName != None):
+                if (platform == 'darwin'):
+                    newDirName = "/Volumes/" + flashDriveName + "/lapses/"
+                elif ('linux' in platform):
+                    newDirName = "/media/pi/" + flashDriveName + "/lapses/"
 	else:
 		print('HOWEVER, I don\'t know how to use that memory address')
 		print(get_usb_devices)
@@ -62,7 +64,7 @@ else:
 createFolder(newDirName)
 
 now = datetime.datetime.now()
-newDirName = newDirName + now.strftime("%m-%d-%Y_%H:%M")
+newDirName = newDirName + now.strftime("%m-%d-%Y_%H.%M")
 #Directory name === ./lapses/MM_DD_YYYY-HH:MM
 #create timelapse folder for this project
 createFolder(newDirName) # <<-- THIS project's folder
@@ -70,12 +72,13 @@ createFolder(newDirName) # <<-- THIS project's folder
 
 #Loop for Linux
 
-if (platform == 'linux'):
+if ('linux' in platform):
 	import picamera
 	with picamera.PiCamera() as camera:
 		camera.resolution = (1024, 768)
 		for filename in camera.capture_continuous(newDirName+'/img{timestamp:%H-%M-%S-%f}.jpg'):
-			print("Image Captured:")
+			print("Image "+imgCount+" Captured:")
+			imgCount++
 			sleep(waitTime)
 
 if (platform == 'darwin'):
